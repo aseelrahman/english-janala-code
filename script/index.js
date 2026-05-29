@@ -1,3 +1,23 @@
+const createElements = (arr) =>{
+    const htmlElements = arr.map(el => `<span class='btn'>${el}</span>`)
+    return htmlElements.join('');
+    
+}
+
+const synonyms = ['hello', 'hi', 'konnichiwa'];
+createElements(synonyms)
+
+const manageSpinner = (status) =>{
+    if(status == true){
+        document.getElementById('spinner').classList.remove('hidden')
+        document.getElementById('word-container').classList.add('hidden')
+    }
+    else{
+        document.getElementById('spinner').classList.add('hidden')
+        document.getElementById('word-container').classList.remove('hidden')
+    }
+}
+
 const loadLessons = () =>{
     fetch("https://openapi.programming-hero.com/api/levels/all")
         .then(res => res.json())
@@ -28,6 +48,7 @@ const removeActive = () => {
 }
 
 const loadLevelWord = (id) => {
+    manageSpinner(true);
     const url = `https://openapi.programming-hero.com/api/level/${id}`
     fetch(url)
         .then(res => res.json())
@@ -37,7 +58,6 @@ const loadLevelWord = (id) => {
             clickBtn.classList.add('active')
             displayLevelWord(data.data)
         })
-
     }
     
 const displayLevelWord = (words) => {
@@ -51,6 +71,7 @@ const displayLevelWord = (words) => {
             <h2 class="font-bold text-4xl">নেক্সট Lesson এ যান</h2>
         </div>
         `
+        manageSpinner(false)
         return
     }
     
@@ -75,6 +96,7 @@ const displayLevelWord = (words) => {
         `
         wordContainer.appendChild(card)
     })
+    manageSpinner(false)
 }
 
 const loadWordDetail = async (id) =>{
@@ -94,9 +116,7 @@ const loadWordDetail = async (id) =>{
     </div>
     <div>
         <h2 class="font-bold">সমার্থক শব্দ গুলো</h2>
-        <span class="btn">SYN1</span>
-        <span class="btn">SYN2</span>
-        <span class="btn">SUN3</span>
+        <div class"">${createElements(word.synonyms)}</div>
     </div>
         `
         document.getElementById('my_modal_5').showModal()
